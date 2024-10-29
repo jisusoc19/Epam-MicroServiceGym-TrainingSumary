@@ -20,10 +20,11 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(autRequest ->
                         autRequest
-                                .requestMatchers("/doc/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/eureka/**" ,"/**","/webjars/**", "/swagger-resources/**").permitAll()
-                                .requestMatchers("/h2/**","/h2-console").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/trainer/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/trainer/**").permitAll()
+                                .requestMatchers("/doc/**", "/swagger-ui/**", "/v3/api-docs/**","/**" ,"/swagger-ui.html","/eureka/**" ,"/**","/webjars/**", "/swagger-resources/**").permitAll()
+                                .requestMatchers("/h2/**","/h2-console","/api/trainer/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/trainer/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/trainer/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"/api/trainer/**").permitAll()
                                 .anyRequest().authenticated()
 
                 )

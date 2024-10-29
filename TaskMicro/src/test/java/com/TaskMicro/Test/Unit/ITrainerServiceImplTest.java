@@ -4,7 +4,7 @@ import com.TaskMicro.Entity.Trainer;
 import com.TaskMicro.Repository.ITrainerRepo;
 import com.TaskMicro.Service.Trainer.ITrainerServiceImpl;
 import com.TaskMicro.Service.Trainer.ItrainerService;
-import com.TaskMicro.TrainerRequestDto.TrainerRequestD;
+import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,13 +35,13 @@ public class ITrainerServiceImplTest {
     }
     @Test
     public void testSumaryCount_Null() {
-        TrainerRequestD trainerDto = null;
+        TrainerRequestDto trainerDto = null;
         HashMap<String, Integer> result = trainerService.SumaryCount(trainerDto);
         assertNull(result);
     }
     @Test
     public void testSumaryCount_ValidInput() {
-        TrainerRequestD trainerDto = new TrainerRequestD();
+        TrainerRequestDto trainerDto = new TrainerRequestDto();
         trainerDto.setUsername("johndoe");
         trainerDto.setTrainingDate(new Date());  // Use la fecha actual para la prueba
 
@@ -70,14 +70,14 @@ public class ITrainerServiceImplTest {
         assertNull(result);
 
         // Prueba con TrainerRequestD inactivo
-        TrainerRequestD inactiveTrainer = new TrainerRequestD();
+        TrainerRequestDto inactiveTrainer = new TrainerRequestDto();
         inactiveTrainer.setActive(false);
         result = trainerService.save(inactiveTrainer);
         assertNull(result);
     }
     @Test
     public void testSave_WithIncorrectAction() {
-        TrainerRequestD trainerDto = new TrainerRequestD();
+        TrainerRequestDto trainerDto = new TrainerRequestDto();
         trainerDto.setActive(true);
         trainerDto.setActionType("DELETE");  // Acción incorrecta
 
@@ -86,7 +86,7 @@ public class ITrainerServiceImplTest {
     }
     @Test
     public void testSave_corretaction() {
-        TrainerRequestD trainerDto = new TrainerRequestD();
+        TrainerRequestDto trainerDto = new TrainerRequestDto();
         trainerDto.setActive(true);
         trainerDto.setActionType("ADD");
 

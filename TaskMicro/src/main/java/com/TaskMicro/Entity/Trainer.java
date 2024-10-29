@@ -42,7 +42,5 @@ public class Trainer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public void init() {
-        log.info("Trainer Entity Created");
-    }
+
 }

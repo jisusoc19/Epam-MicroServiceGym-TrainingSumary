@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Setter
 @Getter
-public class TrainerRequestD {
+public class TrainerRequestDto {
     private String username;
     private String firstName;
     private String lastName;

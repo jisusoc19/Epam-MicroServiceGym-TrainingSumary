@@ -2,7 +2,9 @@ package com.TaskMicro.Controller;
 
 import com.TaskMicro.Entity.Trainer;
 import com.TaskMicro.Service.Trainer.ItrainerService;
-import com.TaskMicro.TrainerRequestDto.TrainerRequestD;
+import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class TrainerController {
-    private ItrainerService traineService;
+    private final ItrainerService traineService;
+
+
 
     public TrainerController(ItrainerService traineService) {
         this.traineService = traineService;
@@ -32,7 +36,7 @@ public class TrainerController {
     }
 
     @PostMapping("/trainer")
-    public ResponseEntity<?> save(@RequestBody TrainerRequestD trainerdto){
+    public ResponseEntity<?> save(@RequestBody TrainerRequestDto trainerdto){
         Trainer trainer = traineService.save(trainerdto);
         if (trainer == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar el trainer");
@@ -40,5 +44,16 @@ public class TrainerController {
         return ResponseEntity.ok(trainer);
 
     }
+    @DeleteMapping("/trainer")
+    public ResponseEntity<?> delete(@RequestBody TrainerRequestDto trainerDto){
+
+        if (trainerDto==null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al borrar el trainer");
+        }
+        traineService.delete(trainerDto);
+        return ResponseEntity.ok("Username Borrado " + trainerDto.getUsername() +" con exito ");
+
+    }
+
 
 }

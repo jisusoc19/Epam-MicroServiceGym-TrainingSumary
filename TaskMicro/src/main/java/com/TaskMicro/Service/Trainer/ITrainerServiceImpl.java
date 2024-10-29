@@ -2,7 +2,8 @@ package com.TaskMicro.Service.Trainer;
 
 import com.TaskMicro.Entity.Trainer;
 import com.TaskMicro.Repository.ITrainerRepo;
-import com.TaskMicro.TrainerRequestDto.TrainerRequestD;
+import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
+import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
     }
 
     @Override
-    public Trainer save(TrainerRequestD trainerDto) {
+    public Trainer save(TrainerRequestDto trainerDto) {
         if (trainerDto == null || trainerDto.isActive()==false) {
             log.error("Error en TrainerServiceImpl método save: TrainerDto es nulo o inactivo");
             return null;
@@ -61,18 +62,20 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
     }
 
     @Override
-    public void delete(String username, String actionType) {
-        Trainer trainer = trainerRepo.findByUsername(username).orElse(null);
-        if (trainer==null) {
-            log.error("No se encontró el TRAINER con el username " + username + ", no se puede eliminar" + username);
+    public void delete(TrainerRequestDto trainerDto) {
+
+        if (trainerDto==null) {
+            log.error("No se encontró el TRAINER con el username " + trainerDto.getUsername().toString() + ", no se puede eliminar");
             throw new NullPointerException("No hay Trainer para Borrar");
 
         }
-        if(!"DELETE".equals(actionType)){
-        log.info("Trainer con el username " + username + " no se pudo eliminar Por action incorrecta");
+        if(!"DELETE".equals(trainerDto.getActionType())){
+        log.info("Trainer con el username " + trainerDto.getUsername().toString() + " no se pudo eliminar Por action incorrecta");
         }
+        Trainer trainer = trainerRepo.findByUsername(trainerDto.getUsername()).orElse(null);
         trainer.setStatus(false);
-        log.info("Trainer borrado correctamente");
+        trainerRepo.save(trainer);
+        log.info("Trainer desactivado correctamente");
     }
 
     @Override
@@ -87,7 +90,7 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
     }
 
     @Override
-    public HashMap<String, Integer> SumaryCount(TrainerRequestD trainerdto) {
+    public HashMap<String, Integer> SumaryCount(TrainerRequestDto trainerdto) {
         if (trainerdto==null){
             log.error("esta llegnado nulo");
             return null;
