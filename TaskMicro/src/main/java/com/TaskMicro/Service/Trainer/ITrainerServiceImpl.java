@@ -36,9 +36,20 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
         log.info("Lista de Trainee Ejecutada");
         return lista;
     }
+    public boolean existingUsername(String username){
+        return trainerRepo.existsByUsername(username);
+    }
 
     @Override
     public Trainer save(TrainerRequestDto trainerDto) {
+        Optional<Trainer> optionalTrainer = trainerRepo.findByUsername(trainerDto.getUsername());
+        if (optionalTrainer.isPresent()) {
+            Trainer existingTrainer = optionalTrainer.get();
+            existingTrainer.setSummaryduration(SumaryCount(trainerDto));
+            trainerRepo.save(existingTrainer);
+            log.info("Trainer existente actualizado");
+            return existingTrainer;
+        }
         if (trainerDto == null || trainerDto.isActive()==false) {
             log.error("Error en TrainerServiceImpl método save: TrainerDto es nulo o inactivo");
             return null;
