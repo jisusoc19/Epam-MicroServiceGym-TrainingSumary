@@ -16,7 +16,7 @@ import java.util.*;
 @Service
 @Transactional
 @Slf4j
-public class ITrainerServiceImpl implements ItrainerService { // Corregido el nombre de la clase y la interfaz
+public class ITrainerServiceImpl implements ItrainerService {
 
     private final ITrainerRepo trainerRepo;
 
@@ -36,9 +36,7 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
         log.info("Lista de Trainee Ejecutada");
         return lista;
     }
-    public boolean existingUsername(String username){
-        return trainerRepo.existsByUsername(username);
-    }
+
 
     @Override
     public Trainer save(TrainerRequestDto trainerDto) {

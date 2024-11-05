@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface ITrainerRepo extends MongoRepository<Trainer,String> {
 
     Optional<Trainer> findByUsername(String username);
-    Boolean existsByUsername(String username);
+
 }
