@@ -14,26 +14,4 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 public class DecodeJwt {
 
-    private String secret;
-
-    public DecodeJwt(String secret) {
-        this.secret = secret;
-    }
-
-    public JWTClaimsSet decode(String token) throws ParseException, JOSEException {
-        // Parse the token
-        SignedJWT signedJWT = SignedJWT.parse(token);
-
-        // Create a verifier using the secret key
-        byte[] secretKey = secret.getBytes();
-        JWSVerifier verifier = new MACVerifier(secretKey);
-
-        // Verify the token
-        if (!signedJWT.verify(verifier)) {
-            throw new JOSEException("JWT verification failed");
-        }
-
-        // Retrieve the JWT claims
-        return signedJWT.getJWTClaimsSet();
-    }
 }
