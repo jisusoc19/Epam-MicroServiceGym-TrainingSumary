@@ -65,6 +65,7 @@ public class TrainerServiceStepDefs {
         when(trainerRepo.findByUsername("existingUser")).thenReturn(Optional.of(existingTrainer));
     }
 
+
     @And("I have new valid details for this trainer")
     public void i_have_new_valid_details_for_this_trainer() {
         trainerDto.setFirstName("Updated");
