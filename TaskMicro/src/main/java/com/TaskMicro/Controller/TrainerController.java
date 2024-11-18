@@ -44,7 +44,7 @@ public class TrainerController {
         return ResponseEntity.ok(trainer);
 
     }
-    @DeleteMapping("/trainer")
+    @PutMapping("/trainer")
     public ResponseEntity<?> delete(@RequestBody TrainerRequestDto trainerDto){
 
         if (trainerDto==null) {

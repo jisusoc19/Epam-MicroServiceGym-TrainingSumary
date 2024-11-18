@@ -16,7 +16,7 @@ import java.util.*;
 @Service
 @Transactional
 @Slf4j
-public class ITrainerServiceImpl implements ItrainerService { // Corregido el nombre de la clase y la interfaz
+public class ITrainerServiceImpl implements ItrainerService {
 
     private final ITrainerRepo trainerRepo;
 
@@ -37,8 +37,17 @@ public class ITrainerServiceImpl implements ItrainerService { // Corregido el no
         return lista;
     }
 
+
     @Override
     public Trainer save(TrainerRequestDto trainerDto) {
+        Optional<Trainer> optionalTrainer = trainerRepo.findByUsername(trainerDto.getUsername());
+        if (optionalTrainer.isPresent()) {
+            Trainer existingTrainer = optionalTrainer.get();
+            existingTrainer.setSummaryduration(SumaryCount(trainerDto));
+            trainerRepo.save(existingTrainer);
+            log.info("Trainer existente actualizado");
+            return existingTrainer;
+        }
         if (trainerDto == null || trainerDto.isActive()==false) {
             log.error("Error en TrainerServiceImpl método save: TrainerDto es nulo o inactivo");
             return null;

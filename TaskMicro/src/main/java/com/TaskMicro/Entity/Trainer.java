@@ -3,40 +3,35 @@ package com.TaskMicro.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Document(collection = "trainer")
 @Setter
 @Getter
 @Data
 @Slf4j
-@Table(name = "trainer")
 public class Trainer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "username")
     private String username;
 
-    @Column(name = "firstName")
+    @Indexed
     private String firstName;
 
-    @Column(name = "lastName")
+    @Indexed
     private String lastName;
 
-    @Column(name = "status")
     private Boolean status;
 
-    @Column(name = "summaryduration")
-    @ElementCollection
-    @CollectionTable(name = "Duration_Month", joinColumns = @JoinColumn(name = "username"))
-    @MapKeyColumn(name = "Mes")
+
     private Map<String,Integer> summaryduration;
 
 

@@ -15,4 +15,5 @@ public interface ItrainerService {
     public void delete(TrainerRequestDto trainerDto);
     public Trainer findByUserName(String username);
     public Map<String,Integer> SumaryCount( TrainerRequestDto trainerdto);
+
 }
