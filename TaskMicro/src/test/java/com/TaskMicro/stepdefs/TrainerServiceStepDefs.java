@@ -4,6 +4,7 @@ import com.TaskMicro.Entity.Trainer;
 import com.TaskMicro.Repository.ITrainerRepo;
 import com.TaskMicro.Service.Trainer.ITrainerServiceImpl;
 import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -13,10 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -32,6 +36,8 @@ public class TrainerServiceStepDefs {
     private TrainerRequestDto trainerDto;
     private Trainer savedTrainer;
     private Exception capturedException;
+    private TrainerRequestDto trainerRequestDto;
+    private Exception expectedException;
 
     @Given("I have invalid trainer details")
     public void i_have_invalid_trainer_details() {
@@ -102,5 +108,64 @@ public class TrainerServiceStepDefs {
     public void the_trainer_details_are_returned_correctly() {
         assertNotNull(savedTrainer);
         assertEquals("john.doe", savedTrainer.getUsername());
+    }
+
+    @Given("Failed to update Existing Trainer with bad Credentials")
+    public void failed_to_update_existing_trainer_with_bad_credentials() {
+
+        TrainerRequestDto trainerRequestDto = new TrainerRequestDto();
+    }
+
+    @When("user Update fail Trainer with Username wrong")
+    public void user_update_fail_trainer_with_wrong_username() {
+        when(trainerRepo.findByUsername(anyString())).thenReturn(Optional.empty());
+        try {
+            trainerService.save(trainerRequestDto);
+        } catch (IllegalArgumentException e) {
+            expectedException = e;
+        }
+    }
+
+    @Then("Return IllegalArgumentException")
+    public void return_illegal_argument_exception() {
+        assertNotNull(expectedException);
+        assertTrue(expectedException instanceof IllegalArgumentException);
+    }
+
+
+    @Given("Failed to Delete null Trainer")
+    public void failed_to_delete_null_trainer() {
+        trainerRequestDto = null;
+    }
+
+    @When("Trainer Fail Delete")
+    public void trainer_fail_delete() {
+        try {
+            trainerService.delete(trainerRequestDto);
+        } catch (NullPointerException e) {
+            expectedException = e;
+        }
+    }
+
+    @Then("Return NullPointerException")
+    public void return_null_pointer_exception() {
+        assertNotNull(expectedException);
+        assertTrue(expectedException instanceof NullPointerException);
+    }
+
+    @Given("Existing Trainer to delete")
+    public void existing_trainer_to_delete() {
+        trainerRequestDto = new TrainerRequestDto("Jeus","asdas","asdasd",true,new Date(),10l,"ADD");
+        when(trainerRepo.findByUsername(trainerRequestDto.getUsername())).thenReturn(Optional.of(new Trainer()));
+    }
+
+    @When("Trainer delete by username and Status")
+    public void trainer_delete_by_username_and_status() {
+        trainerService.delete(trainerRequestDto);
+    }
+
+    @Then("Trainer Change Status to DELETE")
+    public void trainer_change_status_to_delete() {
+        verify(trainerRepo);
     }
 }

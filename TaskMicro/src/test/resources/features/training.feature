@@ -12,3 +12,17 @@ Feature: Get trainers with registered training sessions
     Given A trainer with specific username exists
     When I search for a trainer by username
     Then the trainer details are returned correctly
+
+  Scenario: Fail to update Existing Trainer
+    Given Failed to update Existing Trainer with bad Credentials
+    When user Update fail Trainer with Username wrong
+    Then Return IllegalArgumentException
+
+  Scenario Fail to Delete Existing Trainer
+    Given Failed to Delete null Trainer
+    When Trainer Fail Delete
+    Then Return NullPointerExeption
+  Scenario: Delete Existing Trainer
+    Given Existing Trainer to delete
+    When Trainer detete by username and Status
+    Then Trainer Change Status to DELETE
