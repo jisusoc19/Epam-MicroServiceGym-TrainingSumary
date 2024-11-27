@@ -2,7 +2,6 @@ package com.TaskMicro.Service.Trainer;
 
 import com.TaskMicro.Entity.Trainer;
 import com.TaskMicro.TrainerRequestDto.TrainerRequestDto;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
