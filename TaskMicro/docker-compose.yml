@@ -1,0 +1,66 @@
+services:
+  taskmicro:
+    build:
+      context: .
+    ports:
+      - "8090:8090"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      EUREKA_INSTANCE_PREFERIPADDRESS: "true"
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/microServiceGymApp
+    networks:
+      - Epam_network
+    depends_on:
+      - activemq
+      - Mongo
+      - eureka-server
+  Mongo:
+    image: mongo:latest
+    container_name: mongo-server
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - Epam_network
+
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: activemq
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+    networks:
+      - Epam_network
+
+  eureka-server:
+    image: main-eureka
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - Epam_network
+  servicio-usuarios:
+    image: service-main-gym
+    depends_on:
+      - eureka-server
+      - activemq
+    environment:
+      DATABASE_HOST: jdbc:h2:mem:testdb
+      DATABASE_USER: sa
+      DATABASE_PASSWORD:
+      DATABASE_DB: testdb
+      PRIVATE_KEY_PATH: hola
+      PUBLIC_KEY_PATH: hola
+    networks:
+      - Epam_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  Epam_network:
